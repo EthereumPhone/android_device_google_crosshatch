@@ -1,4 +1,4 @@
-allow system_server self:socket ioctl;
+#allow system_server self:socket {ioctl read write create getattr setattr lock relabelfrom relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind};
 allowxperm system_server self:socket ioctl msm_sock_ipc_ioctls;
 
 binder_call(system_server, hal_camera_default)
@@ -15,3 +15,13 @@ dontaudit system_server vendor_display_prop:file r_file_perms;
 
 dontaudit system_server sysfs_msm_subsys:dir search;
 dontaudit system_server sysfs_msm_subsys:file r_file_perms;
+
+# GethNode
+allow system_server system_data_root_file:file { ioctl read write create getattr setattr lock relabelfrom relabelto append unlink link rename open };
+
+allow system_server system_data_root_file:dir { read write add_name remove_name reparent search rmdir open audit_access execmod };
+allow system_server system_data_root_file:dir create;
+#allow system_server vendor_default_prop:file read;
+
+#============= platform_app ==============
+allow platform_app self:capability net_raw;
